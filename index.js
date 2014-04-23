@@ -1,9 +1,6 @@
 var express = require('express'),
-    app = express();
+    app = express(),
+    routes = require('./app/routes');
 
-app.get('/', function (req, res) {
-  res.write('Hello, World!');
-  res.end();
-});
-
+app.use(routes);
 app.listen(8080);
