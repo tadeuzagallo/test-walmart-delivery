@@ -4,11 +4,15 @@
   "description": "Job interview for Wallmart (TSP)",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha -- spec/**/*_spec.js"
   },
   "author": "Tadeu Zagallo <tadeuzagallo@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "express": "^4.0.0"
+  },
+  "devDependencies": {
+    "chai": "^1.9.1",
+    "mocha": "^1.18.2"
   }
 }
