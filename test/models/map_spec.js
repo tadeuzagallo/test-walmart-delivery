@@ -23,12 +23,12 @@ describe(Map, function () {
   });
 
   it('should validate uniqueness of name', function (done) {
-    var name = 'map_1';
+    var factory = FactoryGirl.create('map');
     
-    new Map({ name: name }).save(function (err) {
+    new Map(factory).save(function (err) {
       expect(err).to.be.null;
 
-      new Map({ name: name }).save(function (err) {
+      new Map(factory).save(function (err) {
         err.should.be.an.Object;
         done();
       });
