@@ -6,6 +6,12 @@ var Map = require('../../app/models/map'),
 mongoose.connect('mongodb://localhost/test');
 
 describe(Map, function () {
+  before(function (done) {
+    Map.remove(function (err) {
+      done();
+    });
+  });
+
   it('should validate presence of name', function (done) {
     var map = new Map();
 
