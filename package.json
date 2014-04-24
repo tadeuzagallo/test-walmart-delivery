@@ -14,7 +14,7 @@
   },
   "devDependencies": {
     "chai": "^1.9.1",
-    "factory_girl": "git://github.com/tadeuzagallo/factory_girl.git#autoload-factories",
+    "factory_girl": "git://github.com/tadeuzagallo/factory_girl.git#dev",
     "mocha": "^1.18.2"
   }
 }
