@@ -1,9 +1,9 @@
 var IndexController = require('../../app/controllers/index');
 
 describe(IndexController, function () {
-  context('#indexAction', function () {
+  context('#index', function () {
     it('should be a function', function () {
-      IndexController.indexAction.should.be.a.Function;
+      IndexController.index.should.be.a.Function;
     });
 
     it('should output hello world', function () {
@@ -14,7 +14,7 @@ describe(IndexController, function () {
         end: function(){}
       }
 
-      IndexController.indexAction(null, mockRes);
+      IndexController.index(null, mockRes);
     });
   });
 });

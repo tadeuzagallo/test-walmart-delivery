@@ -1,4 +1,4 @@
-module.exports.indexAction = function (req, res) {
+module.exports.index = function (req, res) {
   res.write('Hello, World!');
   res.end();
 };
