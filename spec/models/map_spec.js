@@ -13,10 +13,8 @@ describe(Map, function () {
   });
 
   it('should validate presence of name', function (done) {
-    var map = new Map();
-
-    map.save(function (err) {
-      expect(err.errors.name).to.be.an.object;
+    new Map().save(function (err) {
+      expect(err.errors.name).to.be.an('object');
       done();
     });
   });
@@ -28,7 +26,7 @@ describe(Map, function () {
       expect(err).to.be.null;
 
       new Map({ name: name }).save(function (err) {
-        expect(err).to.be.an.object;
+        expect(err).to.be.an('object');
         done();
       });
     });
