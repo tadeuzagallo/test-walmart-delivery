@@ -20,4 +20,17 @@ describe(Map, function () {
       done();
     });
   });
+
+  it('should validate uniqueness of name', function (done) {
+    var name = 'map_1';
+    
+    new Map({ name: name }).save(function (err) {
+      expect(err).to.be.null;
+
+      new Map({ name: name }).save(function (err) {
+        expect(err).to.be.an.object;
+        done();
+      });
+    });
+  });
 });
