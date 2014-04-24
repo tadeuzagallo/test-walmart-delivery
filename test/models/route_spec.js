@@ -1,6 +1,12 @@
 var Route = require('../../app/models/route');
 
 describe(Route, function () {
+  before(function (done) {
+    Route.remove(function (err) { 
+      done();
+    });
+  });
+
   it('should have a valid factory', function (done) {
     var factory = FactoryGirl.create('route');
     new Route(factory.attributes()).save(function (err) {
