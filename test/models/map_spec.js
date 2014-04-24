@@ -1,6 +1,4 @@
-var Map = require('../../app/models/map'),
-    chai = require('chai'),
-    expect = chai.expect;
+var Map = require('../../app/models/map');
 
 describe(Map, function () {
   before(function (done) {
@@ -11,7 +9,7 @@ describe(Map, function () {
 
   it('should validate presence of name', function (done) {
     new Map().save(function (err) {
-      expect(err.errors.name).to.be.an('object');
+      err.errors.name.should.be.an.Object;
       done();
     });
   });
@@ -23,7 +21,7 @@ describe(Map, function () {
       expect(err).to.be.null;
 
       new Map({ name: name }).save(function (err) {
-        expect(err).to.be.an('object');
+        err.should.be.an.Object;
         done();
       });
     });

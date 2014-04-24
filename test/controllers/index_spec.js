@@ -1,17 +1,15 @@
-var chai = require('chai'),
-    IndexController = require('../../app/controllers/index')
-    expect = chai.expect;
+var IndexController = require('../../app/controllers/index');
 
 describe(IndexController, function () {
   context('#indexAction', function () {
     it('should be a function', function () {
-      expect(IndexController.indexAction).to.be.a.function;
+      IndexController.indexAction.should.be.a.Function;
     });
 
     it('should output hello world', function () {
       var mockRes = {
         write: function(str) {
-          expect(str).to.be.equal('Hello, World!');
+          str.should.be.equal('Hello, World!');
         },
         end: function(){}
       }
