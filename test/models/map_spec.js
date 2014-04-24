@@ -7,6 +7,14 @@ describe(Map, function () {
     });
   });
 
+  it('should have a valid factory', function (done) {
+    var factory = FactoryGirl.create('map');
+    new Map(factory).save(function (err) {
+      expect(err).to.be.null;
+      done();
+    });
+  });
+
   it('should validate presence of name', function (done) {
     new Map().save(function (err) {
       err.errors.name.should.be.an.Object;
