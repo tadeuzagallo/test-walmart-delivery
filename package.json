@@ -4,7 +4,7 @@
   "description": "Job interview for Wallmart (TSP)",
   "main": "index.js",
   "scripts": {
-    "test": "mocha -- spec/**/*_spec.js"
+    "test": "mocha test/**/*_spec.js"
   },
   "author": "Tadeu Zagallo <tadeuzagallo@gmail.com>",
   "license": "MIT",

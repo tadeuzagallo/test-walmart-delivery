@@ -1,9 +1,6 @@
 var Map = require('../../app/models/map'),
-    mongoose = require('mongoose'),
     chai = require('chai'),
     expect = chai.expect;
-
-mongoose.connect('mongodb://localhost/test');
 
 describe(Map, function () {
   before(function (done) {
