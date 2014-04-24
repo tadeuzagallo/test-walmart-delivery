@@ -1,7 +1,9 @@
-var mongoose = require('mongoose');
+var mongoose = require('mongoose'),
+    Route = require('./route');
 
 var mapSchema = mongoose.Schema({
-  name: { type: String, required: true, unique: true }
+  name: { type: String, required: true, unique: true },
+  routes: { type: [Route.schema], required: true }
 });
 
 var Map = mongoose.model('Map', mapSchema);
