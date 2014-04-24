@@ -1,6 +1,14 @@
 var Route = require('../../app/models/route');
 
 describe(Route, function () {
+  it('should have a valid factory', function (done) {
+    var factory = FactoryGirl.create('route');
+    new Route(factory.attributes()).save(function (err) {
+      expect(err).to.be.null;
+      done();
+    });
+  });
+
   it('should validate presence of from', function (done) {
     validatePresence('from', done);
   });
