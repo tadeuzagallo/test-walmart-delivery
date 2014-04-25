@@ -1,3 +1,5 @@
+var PriorityQueue = require('priorityqueuejs');
+
 var Graph = (function () {
   function Graph() {
     this.vertex = {};
@@ -15,24 +17,19 @@ var Graph = (function () {
 
   Graph.prototype.distance = function (from, to) {
     var closed = [];
-    var open = [from];
     var finished = false;
     var data = {};
 
+    var open = new PriorityQueue(function (a, b) {
+      return  data[b].f - data[a].f;
+    });
+
     data[from] = {g: 0, f: 0, opened: true};
+    open.enq(from);
 
-    while (open.length) {
+    while (!open.isEmpty()) {
       var that = this;
-      var best = open.reduce(function (a, b) {
-        if (data[a] && data[a].f < data[b].f) {
-          return a;
-        }
-        
-        return b;
-      }, -1);
-
-      open.splice(open.indexOf(best), 1);
-      data[best].closed = true;
+      var best = open.deq();
 
       if (best === to) {
         return data[best].g;
@@ -53,7 +50,7 @@ var Graph = (function () {
 
           if (!data[neighbor].opened) {
             data[neighbor].opened = true;
-            open.push(neighbor);
+            open.enq(neighbor);
           }
         }
       });
