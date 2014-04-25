@@ -22,37 +22,32 @@ var Graph = (function () {
     data[from] = {g: 0, f: 0, opened: true};
 
     while (open.length) {
-      var i = -1;
-      var best = 1 << 30;
-
-      for (var j = 0; j < open.length; j++) {
-        var k = open[j];
-
-        if (data[k].f < best) {
-          best = data[k].f;
-          i = k;
+      var that = this;
+      var best = open.reduce(function (a, b) {
+        if (data[a] && data[a].f < data[b].f) {
+          return a;
         }
-      }
+        
+        return b;
+      }, -1);
 
-      best = open.splice(i, 1)[0];
+      open.splice(open.indexOf(best), 1);
       data[best].closed = true;
 
       if (best === to) {
         return data[best].g;
       }
 
-      var neighbors = Object.keys(this.vertex[best]);
-      for (i = 0; i < neighbors.length; i++) {
-        var neighbor = neighbors[i];
+      Object.keys(this.vertex[best]).forEach(function (neighbor) {
         data[neighbor] = data[neighbor] || {};
 
-        if (data[neighbor].closed) continue;
+        if (data[neighbor].closed) return;
 
-        var ng = data[best].g + this.vertex[best][neighbor];
+        var ng = data[best].g + that.vertex[best][neighbor];
 
         if (!data[neighbor].opened || data[neighbor].g > ng) {
           data[neighbor].g = ng;
-          data[neighbor].h = data[neighbor].h || this.vertex[best][neighbor] * (to.charCodeAt(0) - neighbor.charCodeAt(0));
+          data[neighbor].h = data[neighbor].h || that.vertex[best][neighbor] * (to.charCodeAt(0) - neighbor.charCodeAt(0));
           data[neighbor].f = ng + data[neighbor].h;
           data[neighbor].parent = best;
 
@@ -61,7 +56,7 @@ var Graph = (function () {
             open.push(neighbor);
           }
         }
-      }
+      });
     }
 
     return -1;
