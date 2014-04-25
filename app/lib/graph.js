@@ -13,7 +13,7 @@ var Graph = (function () {
     this.vertex[from][to] = distance;
   }
 
-  Graph.prototype.shortestPath = function (from, to) {
+  Graph.prototype.distance = function (from, to) {
     var closed = [];
     var open = [from];
     var finished = false;

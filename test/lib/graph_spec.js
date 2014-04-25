@@ -33,9 +33,9 @@ describe('Graph', function () {
     });
   });
 
-  context('#shortestPath', function () {
+  context('#distance', function () {
     it('should be a function', function() {
-      new Graph().shortestPath.should.be.a.Function;
+      new Graph().distance.should.be.a.Function;
     });
 
     it('should solve a basic problem', function () {
@@ -47,7 +47,7 @@ describe('Graph', function () {
       graph.addEdge('B', 'E', 50);
       graph.addEdge('D', 'E', 30);
 
-      graph.shortestPath('A', 'D').should.be.equal(25);
+      graph.distance('A', 'D').should.be.equal(25);
     });
   });
 });
