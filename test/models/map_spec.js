@@ -34,4 +34,18 @@ describe(Map, function () {
       });
     });
   });
+
+  it('should calculate the shortest path', function (done) {
+     var routes = [
+        {from: 'A', to: 'B', distance: 10},
+        {from: 'B', to: 'D', distance: 15},
+        {from: 'A', to: 'C', distance: 20},
+        {from: 'C', to: 'D', distance: 30},
+        {from: 'B', to: 'E', distance: 50},
+        {from: 'D', to: 'E', distance: 30}
+      ];
+
+    new Map({name: 'foo', routes: routes }).shortestPath('A', 'D').should.be.equal(25);
+    done();
+  });
 });
