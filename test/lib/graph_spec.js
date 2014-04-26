@@ -47,7 +47,7 @@ describe('Graph', function () {
       graph.addEdge('B', 'E', 50);
       graph.addEdge('D', 'E', 30);
 
-      graph.shortestPath('A', 'D').should.be.deep.equal({ distance: 25, route: ['A', 'B', 'D'] });
+      graph.shortestPath('A', 'D').should.be.deep.equal({ distance: 25, path: ['A', 'B', 'D'] });
     });
   });
 });

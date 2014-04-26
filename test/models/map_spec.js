@@ -45,7 +45,7 @@ describe(Map, function () {
         {from: 'D', to: 'E', distance: 30}
       ];
 
-    new Map({name: 'foo', routes: routes }).shortestPath('A', 'D').should.be.deep.equal({ distance: 25, route: ['A', 'B', 'D'] });
+    new Map({name: 'foo', routes: routes }).shortestPath('A', 'D').should.be.deep.equal({ distance: 25, path: ['A', 'B', 'D'] });
     done();
   });
 });

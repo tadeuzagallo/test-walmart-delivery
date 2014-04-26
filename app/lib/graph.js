@@ -32,15 +32,15 @@ var Graph = (function () {
       var best = open.deq();
 
       if (best === to) {
-        var route = [best];
+        var path = [best];
         var distance = data[best].g
 
         while (data[best].parent) {
           best = data[best].parent;
-          route.unshift(best);
+          path.unshift(best);
         }
 
-        return { distance: distance, route: route };
+        return { distance: distance, path: path };
       }
 
       Object.keys(this.vertex[best]).forEach(function (neighbor) {
@@ -64,7 +64,7 @@ var Graph = (function () {
       });
     }
 
-    return { distance: -1, route: null };
+    return { distance: -1, path: null };
   };
 
   return Graph;
