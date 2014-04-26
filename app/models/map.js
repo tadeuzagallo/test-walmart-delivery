@@ -9,14 +9,14 @@ var mapSchema = mongoose.Schema({
 
 var Map = mongoose.model('Map', mapSchema);
 
-Map.prototype.distance = function (from, to) {
+Map.prototype.shortestPath = function (from, to) {
   var graph = new Graph();
 
   this.routes.forEach(function (route) {
     graph.addEdge(route.from, route.to, route.distance);
   });
 
-  return graph.distance(from, to);
+  return graph.shortestPath(from, to);
 };
 
 module.exports = Map;
