@@ -5,4 +5,4 @@ var express = require('express'),
 
 app.get('/', IndexController.index);
 app.post('/map', MapController.create);
-app.get('/map/calculate', MapController.calculate);
+app.get('/map', MapController.calculate);

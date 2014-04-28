@@ -12,3 +12,15 @@ chai.should();
 global.expect = chai.expect;
 global.FactoryGirl = FactoryGirl;
 global.sinon = sinon;
+global.mockRes = function(status, needle, done) {
+  return {
+    status: function (_status) {
+      _status.should.be.equal(status);
+      return this;
+    },
+    json: function (object) {
+      JSON.stringify(object).should.contain(needle);
+      done();
+    }
+  };
+};

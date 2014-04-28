@@ -20,20 +20,13 @@ describe(MapController, function () {
         end: function () {}
       }
 
-      MapController.create(req, res);
+      MapController.create(req, mockRes(201, 'created', done));
     });
 
     it('should output save errors', function (done) {
       var req = { params: {} };
-      var res = {
-        write: function (output) {
-          output.should.contain('`name` is required');
-          done();
-        },
-        end: function () {}
-      };
 
-      MapController.create(req, res);
+      MapController.create(req, mockRes(422, '`name` is required', done));
     });
   });
 
@@ -46,13 +39,7 @@ describe(MapController, function () {
         liter_price: 2.5
       }};
 
-      var res = {
-        write: function (output) {
-          JSON.parse(output).should.be.deep.equal({ cost: 6.25, path: ['A', 'B', 'D'] });
-          done();
-        },
-        end: function () {}
-      };
+      var res = mockRes(200, '{"cost":6.25,"path":["A","B","D"]}', done);
 
       var routes = [
           {from: 'A', to: 'B', distance: 10},
@@ -70,14 +57,7 @@ describe(MapController, function () {
 
     it ('should validate presence of attributes', function (done) {
       var req = { query: {} };
-      var res = {
-        write: function (output) {
-          output.should.contain('from, to, autonomy, liter_price');
-          done();
-        },
-        end: function () {}
-      };
-      MapController.calculate(req, res);
+      MapController.calculate(req, mockRes(422, 'from, to, autonomy, liter_price', done));
     });
   });
 });

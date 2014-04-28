@@ -6,12 +6,10 @@ MapController.create = function (req, res) {
 
   map.save(function (err) {
     if (!err) {
-      res.write('{"message":"Map created successfuly"}');
+      res.status(201).json({message: 'Map created successfuly'});
     } else {
-      res.write(JSON.stringify(err));
+      res.status(422).json(err);
     }
-
-    res.end();
   });
 };
 
@@ -22,8 +20,9 @@ MapController.calculate = function (req, res) {
   var literPrice = req.query.liter_price;
 
   if (!from || !to || !autonomy || !literPrice) {
-    res.write(JSON.stringify({ message: 'To calculate best route and price you need to specify: from, to, autonomy, liter_price' }));
-    return res.end();
+    res.status(422)
+      .json({ message: 'To calculate best route and price you need to specify: from, to, autonomy, liter_price' });
+    return;
   }
 
   Map.find(function (err, maps) {
@@ -39,18 +38,17 @@ MapController.calculate = function (req, res) {
       } else {
         return b;
       }
-    });
+    }, {distance: -1});
 
     if (~shortestPath.distance) {
-      res.write(JSON.stringify({
+      res.json({
         cost: shortestPath.distance / autonomy * literPrice,
         path: shortestPath.path
-      }));
+      });
     } else {
-      res.write(JSON.stringify({ message: 'Unable to find a path' }));
+      res.status(422)
+        .json({ message: 'Unable to find a path' });
     }
-
-    res.end();
   });
 };
 
