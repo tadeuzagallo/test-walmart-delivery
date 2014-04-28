@@ -2,6 +2,11 @@ var mongoose = require('mongoose'),
     Route = require('./route'),
     Graph = require('../lib/graph');
 
+try {
+  module.exports = mongoose.model('Map');
+  return;
+} catch (e){}
+
 var mapSchema = mongoose.Schema({
   name: { type: String, required: true, unique: true },
   routes: { type: [Route.schema], required: true }
