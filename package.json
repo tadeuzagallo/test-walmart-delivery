@@ -11,6 +11,7 @@
   "dependencies": {
     "express": "^4.0.0",
     "mongoose": "^3.8.8",
+    "morgan": "^1.0.0",
     "priorityqueuejs": "^0.2.0"
   },
   "devDependencies": {
