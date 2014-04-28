@@ -1,58 +1,52 @@
-var MapController = require('../../app/controllers/map'),
-    Map = require('../../app/models/map');
+var MapController,
+    Map = function () {},
+    requireSubvert = require('require-subvert')(__dirname);
 
-describe(MapController, function () {
-  before(function (done) {
-    Map.remove(function (err) {
-      done();
-    });
+describe('MapController', function () {
+  before(function () {
+    requireSubvert.subvert('../../app/models/map', Map);
+    MapController = requireSubvert.require('../../app/controllers/map')
+  });
+
+  after(function () {
+    requireSubvert.cleanUp();
   });
 
   context('#create', function () {
     it('should create a new map', function (done) {
-      var map = FactoryGirl.create('map');
-      var req = { params: { map: map } };
-      var res = {
-        write: function (result) {
-          result.should.contain('created');
-          done();
-        },
-        end: function () {}
-      }
-
-      MapController.create(req, mockRes(201, 'created', done));
+      Map.prototype.save = sinon.stub().callsArgWith(0, null);
+      MapController.create({params:{}}, mockRes(201, 'created', done));
     });
 
     it('should output save errors', function (done) {
       var req = { params: {} };
+      var error = '`name` is required';
 
-      MapController.create(req, mockRes(422, '`name` is required', done));
+      Map.prototype.save = sinon.stub().callsArgWith(0, {message: error})
+      MapController.create(req, mockRes(422, error, done));
     });
   });
 
   context('#calculate', function () {
     it('should return route cost and path', function (done) {
-      var req = { query: { 
-        from: 'A',
-        to: 'D',
-        autonomy: 10,
-        liter_price: 2.5
-      }};
+      var autonomy = 10,
+        literPrice = 2.5,
+        req = { query: { 
+          from: 'A',
+          to: 'D',
+          autonomy: autonomy,
+          liter_price: literPrice
+        }},
+        distance = 25,
+        path = ['A', 'B', 'D'],
+        result = { cost: distance / autonomy * literPrice, path: path };
 
-      var res = mockRes(200, '{"cost":6.25,"path":["A","B","D"]}', done);
+      Map.find = sinon.stub().callsArgWith(0, null, [new Map]);
+      Map.prototype.shortestPath = sinon.stub().withArgs('A', 'D').returns({ distance: distance, path: path});
 
-      var routes = [
-          {from: 'A', to: 'B', distance: 10},
-          {from: 'B', to: 'D', distance: 15},
-          {from: 'A', to: 'C', distance: 20},
-          {from: 'C', to: 'D', distance: 30},
-          {from: 'B', to: 'E', distance: 50},
-          {from: 'D', to: 'E', distance: 30}
-        ];
+      var res = mockRes(200, JSON.stringify(result), done);
 
-      new Map({name: 'foo', routes: routes }).save(function (err) {
-        MapController.calculate(req, res);
-      });
+      MapController.calculate(req, res);
     });
 
     it ('should validate presence of attributes', function (done) {

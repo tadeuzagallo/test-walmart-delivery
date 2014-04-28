@@ -1,10 +1,26 @@
-var Map = require('../../app/models/map');
+var Graph = function () {},
+    requireSubvert = require('require-subvert')(__dirname),
+    mongoose = require('mongoose'),
+    Map;
 
-describe(Map, function () {
+
+describe('Map', function () {
   before(function (done) {
+    // Clear mongoose model cache to mock Graph
+    mongoose.models = {};
+    mongoose.modelSchemas = {};
+
+    // Replace Graph with the empty function to stub
+    requireSubvert.subvert('../../app/lib/graph', Graph);
+    Map = requireSubvert.require('../../app/models/map');
+
     Map.remove(function (err) {
       done();
     });
+  });
+
+  after(function () {
+    requireSubvert.cleanUp();
   });
 
   it('should have a valid factory', function (done) {
@@ -35,17 +51,14 @@ describe(Map, function () {
     });
   });
 
-  it('should calculate the shortest path', function (done) {
-     var routes = [
-        {from: 'A', to: 'B', distance: 10},
-        {from: 'B', to: 'D', distance: 15},
-        {from: 'A', to: 'C', distance: 20},
-        {from: 'C', to: 'D', distance: 30},
-        {from: 'B', to: 'E', distance: 50},
-        {from: 'D', to: 'E', distance: 30}
-      ];
+  it('should use graph to calculate the shortest path', function () {
+    var factory = FactoryGirl.create('map');
+    var path = {distance: 25, path: ['A', 'B', 'D']};
 
-    new Map({name: 'foo', routes: routes }).shortestPath('A', 'D').should.be.deep.equal({ distance: 25, path: ['A', 'B', 'D'] });
-    done();
+    Graph.prototype.addEdge = sinon.stub();
+    Graph.prototype.shortestPath = sinon.stub().withArgs('A', 'D').returns(path);
+
+    new Map(factory).shortestPath('A', 'D').should.be.deep.equal(path);
+    Graph.prototype.addEdge.callCount.should.be.equal(factory.routes.length);
   });
 });
