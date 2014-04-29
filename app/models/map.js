@@ -1,6 +1,7 @@
 var mongoose = require('mongoose'),
     Route = require('./route'),
-    Graph = require('../lib/graph');
+    Graph = require('../lib/graph'),
+    uniqueValidator = require('mongoose-unique-validator');
 
 try {
   module.exports = mongoose.model('Map');
@@ -11,6 +12,8 @@ var mapSchema = mongoose.Schema({
   name: { type: String, required: true, unique: true },
   routes: { type: [Route.schema], required: true }
 });
+
+mapSchema.plugin(uniqueValidator, { message: '`{VALUE}` already exists' });
 
 var Map = mongoose.model('Map', mapSchema);
 
