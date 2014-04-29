@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  </head>
+  <body>
+    <h1>Wallmart Delivery System</h1>
+    <h3>Create a map</h3>
+    <form name="create" method="post" action="/map">
+      Name: <input type="text" name="map[name]"><br>
+      <div class="routes">
+        Routes:
+        <div class="route">
+          <input type="text" name="map[routes][0][from]" placeholder="A">
+          <input type="text" name="map[routes][0][to]" placeholder="B">
+          <input type="text" name="map[routes][0][distance]" placeholder="10">
+        </div>
+        <button class="add-route">Add route</button>
+      </div>
+      <br>
+      <input type="submit" value="Create">
+    </form>
+    <h4>Resultado:</h4>
+    <div id="create-result"></div>
+
+    <h3>Calculate route</h3>
+    <form name="calculate" method="get" action="/map">
+      <input type="text" name="from" placeholder="A">
+      <input type="text" name="to" placeholder="D">
+      <input type="text" name="autonomy" placeholder="10 km/l">
+      <input type="text" name="liter_price" placeholder="2.50">
+      <input type="submit" value="Calculate">
+    </form>
+    <h4>Resultado:</h4>
+    <div id="calculate-result"></div>
+
+    <script type="text/javascript">
+      document.querySelector('.add-route').onclick = function (e) {
+        e.preventDefault();
+        var row = this.previousElementSibling;
+        var clone = row.cloneNode(true);
+        [].forEach.call(clone.children, function (input) {
+          input.value = '';
+          input.name = input.name.replace(/(\d+)/, function (count) {
+            return parseInt(count, 10) + 1;
+          });
+        });
+        row.parentNode.insertBefore(clone, this);
+      }
+
+      document.create.onsubmit =
+      document.calculate.onsubmit = function (e) {
+        e.preventDefault();
+
+        var inputs = this.querySelectorAll('input[type=text]')
+        var data = [].map.call(inputs, function (input) {
+          return input.name + '=' + input.value;
+        }).join('&');
+        var request = new XMLHttpRequest();
+        request.open(this.method, this.action + '?' + data, true);
+        request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        request.setRequestHeader('Accept', 'application/json');
+        request.onload = request.onerror = function () {
+          document.getElementById(this.name + '-result').innerHTML = request.response;
+        }.bind(this);
+        request.send(data);
+      };
+    </script>
+  </body>
+</html>

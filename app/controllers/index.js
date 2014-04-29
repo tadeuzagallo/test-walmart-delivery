@@ -1,4 +1,3 @@
 module.exports.index = function (req, res) {
-  res.write('Hello, World!');
-  res.end();
+  res.sendfile('app/views/index/index.html');
 };
