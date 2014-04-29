@@ -1,6 +1,6 @@
 var Route = require('../../app/models/route');
 
-describe(Route, function () {
+describe('Route', function () {
   before(function (done) {
     Route.remove(function (err) { 
       done();
