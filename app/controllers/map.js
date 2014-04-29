@@ -2,7 +2,7 @@ var Map = require('../models/map');
 var MapController = {};
 
 MapController.create = function (req, res) {
-  var map = new Map(req.params.map);
+  var map = new Map(req.body.map);
 
   map.save(function (err) {
     if (!err) {

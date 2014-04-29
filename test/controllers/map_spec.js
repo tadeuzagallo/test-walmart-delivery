@@ -15,11 +15,11 @@ describe('MapController', function () {
   context('#create', function () {
     it('should create a new map', function (done) {
       Map.prototype.save = sinon.stub().callsArgWith(0, null);
-      MapController.create({params:{}}, mockRes(201, 'created', done));
+      MapController.create({body:{}}, mockRes(201, 'created', done));
     });
 
     it('should output save errors', function (done) {
-      var req = { params: {} };
+      var req = { body: {} };
       var error = '`name` is required';
 
       Map.prototype.save = sinon.stub().callsArgWith(0, {message: error})
