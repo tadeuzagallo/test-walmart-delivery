@@ -2,9 +2,11 @@ var Map = require('../models/map');
 var MapController = {};
 
 MapController.create = function (req, res) {
-  var map = new Map(req.body.map);
+  if (!checkAcceptsJson(req, res)) {
+    return;
+  }
 
-  map.save(function (err) {
+  new Map(req.body.map).save(function (err) {
     if (!err) {
       res.status(201).json({message: 'Map created successfuly'});
     } else {
@@ -14,6 +16,10 @@ MapController.create = function (req, res) {
 };
 
 MapController.calculate = function (req, res) {
+  if (!checkAcceptsJson(req, res)) {
+    return;
+  }
+
   var from = req.query.from;
   var to = req.query.to;
   var autonomy = req.query.autonomy;
@@ -51,5 +57,14 @@ MapController.calculate = function (req, res) {
     }
   });
 };
+
+function checkAcceptsJson(req, res) {
+  if (!~req.headers.accept.split(',').indexOf('application/json')) {
+    res.send(406, 'Only json response is available and it seems to be unacceptable...');
+    return false;
+  }
+
+  return true;
+}
 
 module.exports = MapController;

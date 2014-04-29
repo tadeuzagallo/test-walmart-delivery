@@ -19,6 +19,11 @@ global.mockRes = function(status, needle, done) {
       _status.should.be.equal(status);
       return this;
     },
+    send: function (_status, message) {
+      _status.should.be.equal(status);
+      message.should.contain(needle);
+      done();
+    },
     json: function (object) {
       JSON.stringify(object).should.contain(needle);
       done();
